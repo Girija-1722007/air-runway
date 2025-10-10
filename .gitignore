@@ -9,5 +9,4 @@ instance/
 # Ignore executables
 *.exe
 
-# Ignore large static files
-static/*.mp4
+
