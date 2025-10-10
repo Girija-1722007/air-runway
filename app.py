@@ -3,11 +3,21 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from datetime import datetime, timedelta
 from models import db, Flight, Runway, Assignment
 
+
 app = Flask(__name__)
 app.secret_key = "supersecret"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app_new.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
+
+from flask_migrate import Migrate
+
+# assuming you already have:
+# app = Flask(__name__)
+# db = SQLAlchemy(app)
+
+migrate = Migrate(app, db)
+
 
 # ---------------- ATC Login Data ----------------
 ATC_USERS = [
