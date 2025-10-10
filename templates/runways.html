@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="popup">Runways</h2>
+<form method="post">
+  <input name="name" placeholder="Runway Name" required>
+  <input name="length" placeholder="Runway Length (m)" required>
+  <input name="time_required" placeholder="Time Required (min)" required>
+  <button type="submit">Add Runway</button>
+</form>
+
+<table class="assignment-table runway-table">
+  <tr><th>Name</th><th>Length</th><th>Time Required</th></tr>
+  {% for r in runways %}
+  <tr>
+    <td>{{ r.name }}</td>
+    <td>{{ r.length }}</td>
+    <td>{{ r.time_required }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Flights</h2>
+
+<!-- Flight Entry Form -->
+<div class="flight-inputs">
+  <form method="POST">
+    <label>Flight Number</label>
+    <input type="text" name="flight_no" placeholder="Enter flight number" required>
+
+    <label>Operation</label>
+    <select name="operation" required>
+        <option value="">Select operation</option>
+        <option value="arrival">Arrival</option>
+        <option value="departure">Departure</option>
+    </select>
+
+    <label>Category</label>
+    <select name="category" required>
+        <option value="">Select category</option>
+        <option value="L">L</option>
+        <option value="M">M</option>
+        <option value="H">H</option>
+        <option value="J">J</option>
+    </select>
+
+    <label>Start Time</label>
+    <input type="datetime-local" name="start_time" required>
+
+    <label>End Time</label>
+    <input type="datetime-local" name="end_time" required>
+
+    <button type="submit">Add Flight</button>
+  </form>
+</div>
+
+<!-- Flights Table -->
+<div class="section-card">
+<table class="assignment-table flights-table">
+  <tr>
+    <th>Flight No</th>
+    <th>Operation</th>
+    <th>Category</th>
+    <th>Status</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+  </tr>
+  {% for f in flights %}
+  <tr class="{{ 'flight-done' if f.status=='done' }}">
+    <td>{{ f.flight_no }}</td>
+    <td>{{ f.operation }}</td>
+    <td>{{ f.category }}</td>
+    <td>{{ f.status }}</td>
+    <td>{{ f.start_time }}</td>
+    <td>{{ f.end_time }}</td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

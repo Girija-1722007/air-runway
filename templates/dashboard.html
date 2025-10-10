@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="app-content">
+
+  <!-- ===== Stats Section ===== -->
+  <div class="stats">
+    <div class="stat-card animate-pop">
+      <div class="stat-num">{{ flights_pending }}</div>
+      <div class="stat-label">Pending Flights</div>
+    </div>
+    <div class="stat-card animate-pop">
+      <div class="stat-num">{{ flights_assigned }}</div>
+      <div class="stat-label">Assigned Flights</div>
+    </div>
+    <div class="stat-card animate-pop">
+      <div class="stat-num">{{ runways_count }}</div>
+      <div class="stat-label">Runways</div>
+    </div>
+  </div>
+
+  <!-- ===== Runways Section ===== -->
+  <div class="section-card animate-pop">
+    <h2>Runways</h2>
+    <table class="assignment-table large-text">
+      <thead>
+        <tr><th>Name</th><th>Length (m)</th><th>Time Required (s)</th></tr>
+      </thead>
+      <tbody>
+        {% for r in runways %}
+        <tr>
+          <td>{{ r.name }}</td>
+          <td>{{ r.length }}</td>
+          <td>{{ r.time_required }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3">No runways added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== Flights Section ===== -->
+  <div class="section-card animate-pop">
+    <h2>Flights</h2>
+    <table class="assignment-table large-text">
+      <thead>
+        <tr><th>Flight No</th><th>Start</th><th>End</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        {% for f in flights %}
+        <tr>
+          <td>{{ f.flight_no }}</td>
+          <td>{{ f.start_time }}</td>
+          <td>{{ f.end_time }}</td>
+          <td>{{ f.status }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No flights added yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== Assignments Section ===== -->
+  <div class="section-card animate-pop">
+    <h2>Assignments</h2>
+
+    <!-- Allocate Button -->
+    <form method="POST" action="{{ url_for('allocate') }}" style="margin-bottom: 15px;">
+      <button type="submit" class="primary-btn">Allocate Runways</button>
+    </form>
+
+    <table class="assignment-table large-text">
+      <thead>
+        <tr><th>Flight</th><th>Runway</th><th>Start</th><th>End</th></tr>
+      </thead>
+      <tbody>
+        {% for a_dict in assignments %}
+        <tr {% if a_dict.end_dt < now %} style="text-decoration: line-through; opacity: 0.6;" {% endif %}>
+          <td>{{ a_dict.assignment.flight.flight_no }}</td>
+          <td>{{ a_dict.assignment.runway.name }}</td>
+          <td>{{ a_dict.assignment.start_time }}</td>
+          <td>{{ a_dict.assignment.end_time }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4">No assignments yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== Emergency Handling Section ===== -->
+  <div class="section-card animate-pop emergency-section">
+    <h2>🆘 Emergency Handling – Alter Flight Timing</h2>
+    <form method="POST" action="{{ url_for('handle_emergency') }}">
+      <label>Flight:</label>
+      <select name="flight_id" required>
+        {% for f in flights %}
+        <option value="{{ f.id }}">{{ f.flight_no }}</option>
+        {% endfor %}
+      </select>
+
+      <label>New Start:</label>
+      <input type="datetime-local" name="new_start_time" required>
+
+      <label>New End:</label>
+      <input type="datetime-local" name="new_end_time" required>
+
+      <button type="submit" class="warning-btn">Alter Timing</button>
+    </form>
+  </div>
+
+  <!-- ===== Disaster Handling Section ===== -->
+  <div class="section-card animate-pop disaster-section">
+    <h2>💥 Disaster Handling – Delete Runway</h2>
+    <form method="POST" action="{{ url_for('delete_runway') }}">
+      <label>Runway:</label>
+      <select name="runway_id" required>
+        {% for r in runways %}
+        <option value="{{ r.id }}">{{ r.name }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="danger-btn">Delete Runway</button>
+    </form>
+  </div>
+
+</main>
+{% endblock %}

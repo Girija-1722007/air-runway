@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="popup">Assignments</h2>
+<table>
+  <tr><th>Flight</th><th>Runway</th><th>Conflict</th></tr>
+  {% for a in assignments %}
+  <tr>
+    <td>{{ a.flight.flight_no }}</td>
+    <td>{{ a.runway.name }}</td>
+    <td>{{ "Yes" if a.conflict else "No" }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

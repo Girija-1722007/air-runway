@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="popup animate-pop">
+  <h2>ATC Login</h2>
+  <form method="post">
+    <input name="name" placeholder="Your Name" required>
+    <input name="airport" placeholder="Airport Name" required>
+    <select name="position" required>
+      <option value="">Select Position</option>
+      <option value="Supervisor">Supervisor</option>
+      <option value="Ground Controller">Ground Controller</option>
+      <option value="Tower Controller">Tower Controller</option>
+    </select>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<!-- login history -->
+<div class="section-card animate-pop">
+  <h3>Previous Logins</h3>
+  <ul>
+    {% for entry in history %}
+      <li>{{ entry.login_time }} - {{ entry.name }} - {{ entry.airport }} - {{ entry.position }}</li>
+    {% else %}
+      <li>No logins yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

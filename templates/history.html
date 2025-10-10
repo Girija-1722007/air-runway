@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Login History{% endblock %}
+{% block content %}
+<h2>Login History</h2>
+<ul>
+    {% for entry in history %}
+    <li>{{ entry.login_time }} - {{ entry.name }} - {{ entry.airport }} - {{ entry.position }}</li>
+    {% endfor %}
+</ul>
+<a href="/dashboard">Back to Dashboard</a>
+{% endblock %}
